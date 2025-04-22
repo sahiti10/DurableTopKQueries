@@ -40,7 +40,7 @@
          System.out.println((mode.equals("DEMO") ? "Running DEMO on" : "Evaluating") + " Dataset: " + filePath);
          System.out.println("=========================================");
  
-         List<TemporalObject> objects = DataLoader.loadFromCSV(filePath);
+         List<TemporalObject> objects = LoadCSVData.loadFromCSV(filePath);
  
          int totalTime = objects.stream()
                  .flatMap(obj -> obj.timeSeries.keySet().stream())
