@@ -20,28 +20,30 @@ Durable top-k queries identify objects that appear in the top-k results over a s
 | Approximate     | ColumnIndex            | Approximate      | Fast (column-wise)   | Yes                      |
 | Approximate     | CellWiseIndex (CEL)    | Approximate      | Fast and Recommended | Yes                      |
 
-## Project Structure
+## Source Code Files
 
 ```
 durable-topk/
-├── src/durabletopk/              # Java source files for all 7 algorithms
-│   ├── TemporalObject.java
-│   ├── DataLoader.java
-│   ├── PrefixSumDurableTopK.java
-│   ├── IntervalIndexDurableTopK.java
-│   ├── GeometricDurableTopK.java
-│   ├── SamplingDurableTopK.java
-│   ├── ObliviousIndexDurableTopK.java
-│   ├── ColumnIndexDurableTopK.java
-│   ├── CellWiseIndexDurableTopK.java
-│   └── ExperimentalRunner.java
-├── data/
-│   ├── Florida_Temp_Data_Preprocessed.csv
-│   ├── ar1_dataset.csv
-│   └── dense_stock_synthetic.csv
-└── README.md
+- /src/durabletopk/              # Java source files for all 7 algorithms
+-- TemporalObject.java
+-- LoadCSVData.java
+-- PrefixSumDurableTopK.java
+-- IntervalIndexDurableTopK.java
+-- GeometricDurableTopK.java
+-- SamplingDurableTopK.java
+-- ObliviousIndexDurableTopK.java
+-- ColumnIndexDurableTopK.java
+-- CellWiseIndexDurableTopK.java
+-- ExperimentalRunner.java
+-- VisualizeResults.java
+
+- /data/
+-- Florida_Temp_Data_Preprocessed.csv
+-- ar1_dataset.csv
+-- dense_stock_synthetic.csv
 ```
 Note: Download the AR(1) dataset here: https://drive.google.com/file/d/18B34krUqIDZLtbeGFZ1gAkcOtq95Swpq/view?usp=drive_link
+
 ## Compilation and Execution
 Requirements: Java 8 or later
 
@@ -107,8 +109,8 @@ The project includes a Java Swing-based bar chart visualization to compare algor
 2. Compile and run the visualization:
 
 ```bash
-javac -d bin src/durabletopk/ResultsChart.java
-java -cp bin durabletopk.ResultsChart
+javac -d bin src/durabletopk/VisualizeResults.java
+java -cp bin durabletopk.VisualizeResults.java
 ```
 
 ### Output:
