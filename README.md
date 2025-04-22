@@ -41,7 +41,7 @@ durable-topk/
 │   └── dense_stock_synthetic.csv
 └── README.md
 ```
-
+Note: Download the AR(1) dataset here: https://drive.google.com/file/d/18B34krUqIDZLtbeGFZ1gAkcOtq95Swpq/view?usp=drive_link
 ## Compilation and Execution
 Requirements: Java 8 or later
 
