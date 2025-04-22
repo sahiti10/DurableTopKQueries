@@ -1,5 +1,5 @@
 /**
- * ResultsChart
+ * VisualizeResults
  * ---------------------
  * Displays basic bar charts of algorithm runtimes and memory usage using Java Swing.
  * Visualizes data from results_summary.csv.
@@ -66,7 +66,7 @@ public class VisualizeResults extends JPanel {
 
     public static void main(String[] args) throws IOException {
         JFrame frame = new JFrame("Durable Top-k Algorithm Runtime and Memory Chart");
-        ResultsChart chart = new ResultsChart("results_summary.csv");
+        VisualizeResults chart = new VisualizeResults("results_summary.csv");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900, 600);
         frame.add(chart);
