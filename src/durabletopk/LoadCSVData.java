@@ -1,5 +1,5 @@
 /**
- * DataLoader
+ * LoadCSVData
  * ------------
  * Utility class for reading CSV datasets and parsing them into a list of TemporalObject instances.
  *
