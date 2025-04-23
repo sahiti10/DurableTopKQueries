@@ -1,10 +1,3 @@
-/**
- * VisualizeResults
- * ---------------------
- * Displays basic bar charts of algorithm runtimes and memory usage using Java Swing.
- * Visualizes data from results_summary.csv.
- */
-
 package durabletopk;
 
 import javax.swing.*;
@@ -18,14 +11,14 @@ public class VisualizeResults extends JPanel {
 
     public VisualizeResults(String csvFile) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(csvFile));
-        String line = reader.readLine(); // skip header
+        String line = reader.readLine();
         while ((line = reader.readLine()) != null) {
             String[] tokens = line.split(",");
             String algo = tokens[0];
             int runtime = Integer.parseInt(tokens[2]);
             int memory = Integer.parseInt(tokens[3]);
-            runtimeMap.put(algo, runtime);
-            memoryMap.put(algo, memory);
+            runtimeMap.put(algo, Math.max(1, runtime));
+            memoryMap.put(algo, Math.max(1, memory));
         }
         reader.close();
     }
@@ -47,12 +40,12 @@ public class VisualizeResults extends JPanel {
 
             int barX = x + i * barWidth * 2;
 
-            g.setColor(new Color(100, 149, 237)); // runtime
+            g.setColor(new Color(100, 149, 237));
             g.fillRect(barX, height - runtimeBar + 50, barWidth - 5, runtimeBar);
             g.setColor(Color.BLACK);
             g.drawString(runtimeMap.get(key) + " ms", barX, height - runtimeBar + 40);
 
-            g.setColor(new Color(144, 238, 144)); // memory
+            g.setColor(new Color(144, 238, 144));
             g.fillRect(barX + barWidth, height - memoryBar + 50, barWidth - 5, memoryBar);
             g.setColor(Color.BLACK);
             g.drawString(memoryMap.get(key) + " MB", barX + barWidth, height - memoryBar + 40);
@@ -68,7 +61,7 @@ public class VisualizeResults extends JPanel {
         JFrame frame = new JFrame("Durable Top-k Algorithm Runtime and Memory Chart");
         VisualizeResults chart = new VisualizeResults("results_summary.csv");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(900, 600);
+        frame.setSize(1000, 600);
         frame.add(chart);
         frame.setVisible(true);
     }
