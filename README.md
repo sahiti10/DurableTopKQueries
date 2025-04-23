@@ -1,26 +1,25 @@
-
 # Durable Top-k Queries on Temporal Data
 
-This repository provides a full Java implementation of the algorithms from the VLDB 2018 paper:  
+This project implements algorithms from the VLDB 2018 paper:  
 **"Durable Top-k Queries on Temporal Data"**  by Junyang Gao, Pankaj K. Agarwal, and Jun Yang.
 
-**Implemented by**: Sahiti Adepu, Rakesh Duggempudi, Sharan Kumar Reddy Kodudula
+**Contributors**: Sahiti Adepu, Rakesh Duggempudi, Sharan Kumar Reddy Kodudula
 
 ## Overview
 
-Durable top-k queries identify objects that appear in the top-k rankings for a sufficient fraction (`τ`) of a given time interval. This project implements all seven algorithms from the paper, with support for both fixed-k and variable-k query settings.
+Durable top-k queries identify objects that frequently appear in the top-k rankings over a time interval. This project includes implementations of all 7 algorithms from the paper, supporting both fixed-k and variable-k query modes.
 
 ## Algorithms Implemented
 
-| Type        | Algorithm              | Accuracy      | Performance           | Arbitrary k Supported |
-|-------------|------------------------|----------------|------------------------|------------------------|
-| Exact       | PrefixSum              | Exact          | Moderate               | No                     |
-| Exact       | IntervalIndex          | Exact          | Efficient              | No                     |
-| Exact       | GeometricPruning       | Exact          | Fast with pruning      | No                     |
-| Approximate | Sampling               | Approximate    | Very fast              | Yes                    |
-| Approximate | ObliviousIndex         | Approximate    | Fast (pre-indexed)     | Yes                    |
-| Approximate | ColumnIndex            | Approximate    | Fast (column-wise)     | Yes                    |
-| Approximate | CellWiseIndex (CEL)    | Approximate    | Best trade-off         | Yes                    |
+| Type        | Algorithm           | Accuracy     | Speed              | Variable k |
+|-------------|---------------------|--------------|--------------------|------------|
+| Exact       | PrefixSum           | Yes          | Moderate           | No         |
+| Exact       | IntervalIndex       | Yes          | Fast               | No         |
+| Exact       | GeometricPruning    | Yes          | Fast with pruning  | No         |
+| Approximate | Sampling            | Approximate  | Very Fast          | Yes        |
+| Approximate | ObliviousIndex      | Approximate  | Fast (pre-indexed) | Yes        |
+| Approximate | ColumnIndex         | Approximate  | Fast (column-wise) | Yes        |
+| Approximate | CellWiseIndex (CEL) | Approximate  | Best overall       | Yes        |
 
 ## Project Structure
 
@@ -35,8 +34,9 @@ durable-topk/
 -- SamplingDurableTopK.java
 -- ObliviousIndexDurableTopK.java
 -- ColumnIndexDurableTopK.java
--- CellWiseIndexDurableTopK.java
--- ExperimentalRunner.java
+-- CellWiseIndexDurableTopK.java    # Core Algorithm
+-- FixedKRun.java                   # Main method for execution
+-- VariableKRun.java
 -- VisualizeResults.java
 
 - /data/
@@ -46,12 +46,11 @@ durable-topk/
 ```
 Note: Download the AR(1) dataset here: https://drive.google.com/file/d/18B34krUqIDZLtbeGFZ1gAkcOtq95Swpq/view?usp=drive_link
 
+## How to Run
 
-## Compilation and Execution
+**Prerequisites**: Java 8 or higher
 
-**Prerequisites**: Java 8 or later
-
-### Compile
+### Compile the project
 ```bash
 javac -d bin src/durabletopk/*.java
 ```
@@ -70,68 +69,58 @@ Each mode runs experiments on:
 - `dense_stock_synthetic.csv` (demo dataset)
 - `ar1_dataset.csv` and `Florida_Temp_Data_Preprocessed.csv` (evaluation datasets)
 
-## Parameters and Terminology
+## Parameters
 
-- `k`: Number of top-ranked objects to consider at each timestamp.
-- `τ (tau)`: Durability threshold (e.g., `τ = 0.05` means 5% of the time interval).
-- `startTime`, `endTime`: The interval over which durable top-k is computed.
+- `k`: Number of top-ranked items to consider
+- `tau`: Durability threshold (e.g., 0.05 means 5% of the time interval)
+- `startTime`, `endTime`: Time interval for computing durable top-k
 
-## Datasets Used
+## Sample Output
 
-| Dataset Name                          | Description                                                       |
-|--------------------------------------|-------------------------------------------------------------------|
-| `dense_stock_synthetic.csv`          | Synthetic stock values with strong top-k patterns                 |
-| `ar1_dataset.csv`                    | AR(1) generated series to test scalability and durability logic   |
-| `Florida_Temp_Data_Preprocessed.csv` | Real-world temperature readings from Florida weather stations     |
-
-## Output Format
-
-For each algorithm, the following output is printed:
+After running the program, you might see output like:
 
 ```
-<Algorithm> Top-k Result: [id1, id2, ..., idk]
-<Algorithm> completed in <X> ms
+---------------------------------------
+Config: start=1, end=1000, k=10, tau=0.05
+------------------------------------------------
+PrefixSum completed in 70 ms
+PrefixSum Top-k Result: [75, 76, 77, 78, 79, 80, 81, 82, 83, 84]
+----------------------------------
+IntervalIndex completed in 72 ms
+IntervalIndex Top-k Result: [75, 76, 77, 78, 79, 80, 81, 82, 83, 84]
+----------------------------------
+Geometric completed in 58 ms
+Geometric Top-k Result: [75, 76, 77, 78, 79, 80, 81, 82, 83, 84]
+----------------------------------
+Sampling completed in 22 ms
+Sampling Top-k Result: [73, 76, 77, 78, 79, 80, 81, 82, 83, 84]
 ```
 
-And logged in `results_summary.csv` with:
-
+Additionally, a `results_summary.csv` file is generated containing:
 - Algorithm name
 - Top-k result size
 - Runtime in milliseconds
 - Memory used in megabytes
-- Precision, Recall, and F1 score (compared to PrefixSum)
+- Precision, Recall, and F1-score (compared to PrefixSum)
 
-## Evaluation Observations
+## Visualization
 
-- PrefixSum serves as the baseline for correctness.
-- All exact algorithms match its results.
-- Approximate algorithms may produce varied results but offer better runtime.
-- CellWiseIndex performs best in terms of the trade-off between speed and accuracy.
-
-## Visualization Support
-
-A built-in Swing-based visualization tool allows comparison of algorithm runtimes and memory usage.
-
-### To Use
+To compare algorithm performance visually:
 
 1. Run `FixedKRun` or `VariableKRun` to generate `results_summary.csv`
-2. Then execute:
-
+2. Execute:
 ```bash
 java -cp bin durabletopk.VisualizeResults
 ```
 
-### Output
-
-A bar chart showing:
-
+This will display a bar chart showing:
 - Runtime (blue bars) in milliseconds
 - Memory usage (green bars) in megabytes
-- Per algorithm comparison
+- Comparison across algorithms
 
 ## Summary
 
-- This project replicates the core ideas and experiments from the VLDB 2018 paper.
-- Supports both fixed and variable-k modes.
-- Includes runtime and memory tracking, result accuracy (F1), and Java-based visualization.
-- Demonstrates scalability and effectiveness across synthetic and real-world datasets.
+- Implements all algorithms from the VLDB 2018 paper
+- Supports both fixed and variable-k query modes
+- Tracks runtime, memory usage, and accuracy metrics
+- Provides visualization for performance comparison
