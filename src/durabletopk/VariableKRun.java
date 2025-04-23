@@ -11,9 +11,10 @@ public class VariableKRun {
     }
 
     public static void runAllAlgorithms(String filePath, boolean printResults, boolean timeIt) throws Exception {
-        System.out.println("\n=========================================");
+        System.out.println("\n---------------------------------------");
+        System.out.println("\n---------------------------------------");
         System.out.println("Running Variable-k on Dataset: " + filePath);
-        System.out.println("=========================================");
+        System.out.println("\n---------------------------------------");
 
         List<TemporalObject> objects = LoadCSVData.loadFromCSV(filePath);
 
@@ -88,7 +89,6 @@ public class VariableKRun {
             System.out.println(name + " Top-k Result: " + result);
             System.out.println("----------------------------------");
         }
-
         ResultsLogger.log(name, result, runtime, memUsed);
     }
 
