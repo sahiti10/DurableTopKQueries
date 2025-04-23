@@ -9,7 +9,6 @@ public class ObliviousIndexDurableTopK {
      public ObliviousIndexDurableTopK(List<TemporalObject> objects, List<Integer> ks) {
          this.topKAtTime = new HashMap<>();
          this.indexedKs = ks;
- 
          TreeMap<Integer, List<TemporalObject>> timeIndex = new TreeMap<>();
          for (TemporalObject obj : objects) {
              for (Map.Entry<Integer, Double> entry : obj.timeSeries.entrySet()) {
@@ -37,14 +36,12 @@ public class ObliviousIndexDurableTopK {
          Map<Integer, List<Integer>> topKTimes = topKAtTime.get(nearestK);
          Map<Integer, Integer> count = new HashMap<>();
          int duration = endTime - startTime + 1;
- 
          for (int t = startTime; t <= endTime; t++) {
              List<Integer> topKList = topKTimes.getOrDefault(t, Collections.emptyList());
              for (int id : topKList) {
                  count.put(id, count.getOrDefault(id, 0) + 1);
              }
          }
- 
          List<Integer> result = new ArrayList<>();
          for (Map.Entry<Integer, Integer> entry : count.entrySet()) {
              if ((double) entry.getValue() / duration >= tau) {
