@@ -1,8 +1,5 @@
 /**
- * CellWiseIndexDurableTopK-> Actual core algo of our paper
- * ---------------------------
- * Implements a two-step greedy approximation algorithm for top-k queries with durability.
- * Builds a durability matrix for various k-values and selects the best one during query time.
+ * Actual core algo of our paper - Implements a two-step greedy approximation algorithm for top-k queries with durability.
  */
 
  package durabletopk;
