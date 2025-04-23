@@ -49,7 +49,7 @@ public class ResultsLogger {
                 writer.write("\n");
             }
             System.out.println("Exported results to " + filename);
-            System.out.println("==================================");
+            System.out.println("-------------------------------------------");
             System.out.println("Best F1 Score: " + String.format("%.2f", bestF1));
             if (bestObjectId != -1) {
                 System.out.println("Representative Top-k Object ID (Highest F1): " + bestObjectId);
