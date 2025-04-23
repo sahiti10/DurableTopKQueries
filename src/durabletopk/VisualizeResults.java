@@ -11,27 +11,42 @@ public class VisualizeResults extends JPanel {
 
     public VisualizeResults(String csvFile) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(csvFile));
-        String line = reader.readLine();
+        String line = reader.readLine(); 
+
         while ((line = reader.readLine()) != null) {
             String[] tokens = line.split(",");
-            String algo = tokens[0];
+
+            String algoName = tokens[0];
+            if (!algoName.contains("k=10")) continue; 
+
             int runtime = Integer.parseInt(tokens[2]);
             int memory = Integer.parseInt(tokens[3]);
-            runtimeMap.put(algo, Math.max(1, runtime));
-            memoryMap.put(algo, Math.max(1, memory));
+
+            runtimeMap.put(algoName, Math.max(1, runtime));
+            memoryMap.put(algoName, Math.max(1, memory));
         }
+
         reader.close();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        if (runtimeMap.isEmpty()) {
+            g.drawString("No results to display. Check dataset filter or CSV file.", 50, 100);
+            return;
+        }
+
         int width = getWidth() - 100;
         int height = getHeight() - 150;
         int x = 50;
+        int barCount = runtimeMap.size();
+        if (barCount == 0) return;
+
         int maxRuntime = runtimeMap.values().stream().max(Integer::compareTo).orElse(1);
         int maxMemory = memoryMap.values().stream().max(Integer::compareTo).orElse(1);
-        int barWidth = (width / runtimeMap.size()) / 2;
+        int barWidth = (width / barCount) / 2;
 
         int i = 0;
         for (String key : runtimeMap.keySet()) {
@@ -50,7 +65,7 @@ public class VisualizeResults extends JPanel {
             g.setColor(Color.BLACK);
             g.drawString(memoryMap.get(key) + " MB", barX + barWidth, height - memoryBar + 40);
 
-            g.drawString(key, barX + 5, height + 65);
+            g.drawString(key, barX, height + 70);
             i++;
         }
 
@@ -58,10 +73,10 @@ public class VisualizeResults extends JPanel {
     }
 
     public static void main(String[] args) throws IOException {
-        JFrame frame = new JFrame("Durable Top-k Algorithm Runtime and Memory Chart");
+        JFrame frame = new JFrame("AR(1) Durable Top-k Visualization");
         VisualizeResults chart = new VisualizeResults("results_summary.csv");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 600);
+        frame.setSize(1200, 650);
         frame.add(chart);
         frame.setVisible(true);
     }
