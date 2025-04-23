@@ -2,8 +2,7 @@
 # Durable Top-k Queries on Temporal Data
 
 This repository provides a full Java implementation of the algorithms from the VLDB 2018 paper:  
-**"Durable Top-k Queries on Temporal Data"**  
-by Junyang Gao, Pankaj K. Agarwal, and Jun Yang.
+**"Durable Top-k Queries on Temporal Data"**  by Junyang Gao, Pankaj K. Agarwal, and Jun Yang.
 
 **Implemented by**: Sahiti Adepu, Rakesh Duggempudi, Sharan Kumar Reddy Kodudula
 
