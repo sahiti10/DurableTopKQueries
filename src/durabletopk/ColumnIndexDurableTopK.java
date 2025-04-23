@@ -1,16 +1,4 @@
-/**
- * ColumnIndexDurableTopK
- * -------------------------
- * Implements column-wise index algorithm (COL) described in Section 4.2.
- *
- * Stores durability information per object per k-value and uses nearest neighbor logic.
- *
- * Time Complexity:
- * - Indexing: O(kT)
- * - Query: O(n)
- */
-
- package durabletopk;
+package durabletopk;
 
 import java.util.*;
 
@@ -30,12 +18,10 @@ public class ColumnIndexDurableTopK {
                 timeIndex.computeIfAbsent(entry.getKey(), x -> new ArrayList<>()).add(obj);
             }
         }
-
         for (int time : timeIndex.keySet()) {
             final int currentTime = time;
             List<TemporalObject> snapshot = timeIndex.get(currentTime);
             snapshot.sort((o1, o2) -> Double.compare(o2.getValueAt(currentTime), o1.getValueAt(currentTime)));
-
             for (int k : indexedKs) {
                 for (int i = 0; i < Math.min(k, snapshot.size()); i++) {
                     int id = snapshot.get(i).id;
@@ -52,6 +38,7 @@ public class ColumnIndexDurableTopK {
         for (Map.Entry<Integer, Map<Integer, Integer>> entry : objectDurability.entrySet()) {
             int id = entry.getKey();
             int timeInTopK = entry.getValue().getOrDefault(bestK, 0);
+
             if ((double) timeInTopK / totalTime >= tau) {
                 result.add(id);
             }
