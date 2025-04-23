@@ -8,23 +8,21 @@ public class FixedKRun {
     public static void main(String[] args) throws Exception {
         String demoDataset = "data/dense_stock_synthetic.csv";
         runAllAlgorithms("DEMO", demoDataset, true, true);
-
         String[] evalDatasets = {
             "data/Florida_Temp_Data_Preprocessed.csv",
             "data/ar1_dataset.csv"
         };
-
         for (String path : evalDatasets) {
             runAllAlgorithms("EVAL", path, false, true);
         }
-
         ResultsLogger.exportCSV("results_summary.csv");
     }
 
     public static void runAllAlgorithms(String mode, String filePath, boolean printResults, boolean timeIt) throws Exception {
-        System.out.println("\n=========================================");
+        System.out.println("\n---------------------------------------");
+        System.out.println("\n---------------------------------------");
         System.out.println((mode.equals("DEMO") ? "Running DEMO on" : "Evaluating") + " Dataset: " + filePath);
-        System.out.println("=========================================");
+        System.out.println("\n---------------------------------------");
 
         List<TemporalObject> objects = LoadCSVData.loadFromCSV(filePath);
 
