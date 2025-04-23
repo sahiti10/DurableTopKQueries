@@ -65,10 +65,6 @@ java -cp bin durabletopk.FixedKRun
 java -cp bin durabletopk.VariableKRun
 ```
 
-Each mode runs experiments on:
-- `dense_stock_synthetic.csv` (demo dataset)
-- `ar1_dataset.csv` and `Florida_Temp_Data_Preprocessed.csv` (evaluation datasets)
-
 ## Parameters
 
 - `k`: Number of top-ranked items to consider
